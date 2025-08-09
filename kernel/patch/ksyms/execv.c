@@ -24,6 +24,7 @@ static void before_first_exec()
 //                 const char __user *const __user *, envp, int, flags)
 static void before_execve(hook_fargs3_t *args, void *udata)
 {
+   
     if (first_init_execed) return;
     first_init_execed = 1;
     before_first_exec();
@@ -55,7 +56,7 @@ static void before_execve(hook_fargs3_t *args, void *udata)
 }
 
 static void after_execv(hook_fargs5_t *args, void *udata)
-{
+{ 
     unhook_syscalln(__NR_execve, before_execve, after_execv);
     unhook_syscalln(__NR_execveat, before_execve, after_execv);
 }

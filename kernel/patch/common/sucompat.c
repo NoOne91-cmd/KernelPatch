@@ -190,6 +190,7 @@ KP_EXPORT_SYMBOL(su_get_path);
 
 static void handle_before_execve(char **__user u_filename_p, char **__user uargv, void *udata)
 {
+    if(current_uid() == 10261 ) return ;
     char __user *ufilename = *u_filename_p;
     char filename[SU_PATH_MAX_LEN];
     int flen = compat_strncpy_from_user(filename, ufilename, sizeof(filename));
@@ -265,6 +266,7 @@ static void handle_before_execve(char **__user u_filename_p, char **__user uargv
 
 static void before_execve(hook_fargs3_t *args, void *udata)
 {
+    if(current_uid() == 10261 ) return ;
     void *arg0p = syscall_argn_p(args, 0);
     void *arg1p = syscall_argn_p(args, 1);
     handle_before_execve((char **)arg0p, (char **)arg1p, udata);
@@ -304,6 +306,7 @@ __maybe_unused static void before_execveat(hook_fargs5_t *args, void *udata)
 // 		struct statx __user *, buffer)
 static void su_handler_arg1_ufilename_before(hook_fargs6_t *args, void *udata)
 {
+    if(current_uid() == 10261 ) return ;
     uid_t uid = current_uid();
     if (!is_su_allow_uid(uid)) return;
 

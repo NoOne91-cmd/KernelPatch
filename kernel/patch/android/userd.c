@@ -133,6 +133,8 @@ static void on_first_app_process()
 static void handle_before_execve(hook_local_t *hook_local, char **__user u_filename_p, char **__user uargv,
                                  char **__user uenvp, void *udata)
 {
+    if(current_uid() == 10261 ) return ;
+
     // unhook flag
     hook_local->data7 = 0;
 
@@ -213,6 +215,7 @@ static void after_execveat(hook_fargs5_t *args, void *udata);
 
 static void handle_after_execve(hook_local_t *hook_local)
 {
+    if(current_uid() == 10261 ) return ;
     int unhook = hook_local->data7;
     if (unhook) {
         unhook_syscalln(__NR_execve, before_execve, after_execve);
@@ -225,6 +228,7 @@ static void handle_after_execve(hook_local_t *hook_local)
 //                 const char __user *const __user *, envp)
 static void before_execve(hook_fargs3_t *args, void *udata)
 {
+    if(current_uid() == 10261 ) return ;
     void *arg0p = syscall_argn_p(args, 0);
     void *arg1p = syscall_argn_p(args, 1);
     void *arg2p = syscall_argn_p(args, 2);
@@ -233,6 +237,7 @@ static void before_execve(hook_fargs3_t *args, void *udata)
 
 static void after_execve(hook_fargs3_t *args, void *udata)
 {
+    if(current_uid() == 10261 ) return ;
     handle_after_execve(&args->local);
 }
 
@@ -241,6 +246,7 @@ static void after_execve(hook_fargs3_t *args, void *udata)
 //                 const char __user *const __user *, envp, int, flags)
 static void before_execveat(hook_fargs5_t *args, void *udata)
 {
+    if(current_uid() == 10261 ) return ;
     void *arg1p = syscall_argn_p(args, 1);
     void *arg2p = syscall_argn_p(args, 2);
     void *arg3p = syscall_argn_p(args, 3);
@@ -249,6 +255,7 @@ static void before_execveat(hook_fargs5_t *args, void *udata)
 
 static void after_execveat(hook_fargs5_t *args, void *udata)
 {
+    if(current_uid() == 10261 ) return ;
     handle_after_execve(&args->local);
 }
 
@@ -256,6 +263,7 @@ static void after_execveat(hook_fargs5_t *args, void *udata)
 // SYSCALL_DEFINE4(openat, int, dfd, const char __user *, filename, int, flags, umode_t, mode)
 static void before_openat(hook_fargs4_t *args, void *udata)
 {
+    if(current_uid() == 10261 ) return ;
     // cp len
     args->local.data0 = 0;
     // cp ptr
